@@ -2,4 +2,11 @@
     <string name="app_name">News App</string>
     <string name="news_app">News App</string>
     <string name="signature">signature</string>
+    <string name="categories">Categories</string>
+    <string name="settings">Settings</string>
+    <string name="drawer_news_app">News App!</string>
+    <string name="title">Why are football\'s biggest clubs starting a new tournament?</string>
+    <string name="time">3 hours ago</string>
+    <string name="source">ABC News</string>
+    <string name="news_image">News Image</string>
 </resources>
