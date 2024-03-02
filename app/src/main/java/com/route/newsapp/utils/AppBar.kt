@@ -21,6 +21,7 @@ import com.route.newsapp.ui.theme.Green
 fun NewsAppBar(onNavigationIconClick: () -> Unit) {
     CenterAlignedTopAppBar(
         title = { Text(text = "News App", color = Color.White) },
+        colors = TopAppBarDefaults.topAppBarColors(Green),
         navigationIcon = {
             IconButton(onClick = { onNavigationIconClick() }) {
                 Icon(
@@ -28,7 +29,7 @@ fun NewsAppBar(onNavigationIconClick: () -> Unit) {
                     "menu", tint = Color.White
                 )
             }
-        }, colors = TopAppBarDefaults.topAppBarColors(Green),
+        },
         actions = {
             IconButton(onClick = {}) {
                 Icon(

@@ -1,9 +1,8 @@
 package com.route.newsapp.utils
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -21,11 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.route.newsapp.R
-import com.route.newsapp.model.NewsData
+import com.route.newsapp.model.ArticlesItem
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NewsCard(newsData: NewsData = NewsData()) {
+fun NewsCard(article: ArticlesItem) {
 
     Card(
         modifier = Modifier.padding(24.dp, 16.dp),
@@ -34,18 +36,18 @@ fun NewsCard(newsData: NewsData = NewsData()) {
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Image(
-            painter = painterResource(id = newsData.imageId),
+        GlideImage(
+            model = article.urlToImage ?: "",
             contentDescription = stringResource(R.string.news_image),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.5F)
+                .fillMaxSize()
+                .aspectRatio(2f)
                 .clip(RoundedCornerShape(8.dp))
         )
-        Row {
+        Row {//source name
             Text(
-                text = stringResource(id = newsData.sourceId),
+                text = article.source?.name ?: "",
                 modifier = Modifier.padding(8.dp),
                 style = TextStyle(fontSize = 10.sp, color = Color.Gray)
             )
@@ -57,12 +59,12 @@ fun NewsCard(newsData: NewsData = NewsData()) {
             )
         }
         Text(
-            text = stringResource(id = newsData.titleId),
+            text = article.title ?: "",
             modifier = Modifier.padding(8.dp),
             style = TextStyle(fontSize = 18.sp)
         )
         Text(
-            text = stringResource(id = newsData.timeId),
+            text = article.publishedAt ?: "",
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.End),

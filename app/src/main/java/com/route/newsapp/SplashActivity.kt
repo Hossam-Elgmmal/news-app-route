@@ -44,7 +44,10 @@ fun SplashScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .paint(painter = painterResource(id = R.drawable.image_pattern))
+            .paint(
+                painter = painterResource(id = R.drawable.image_pattern),
+                contentScale = ContentScale.FillBounds
+            )
     ) {
         Image(
             painter = painterResource(id = R.drawable.image_splash),
