@@ -36,7 +36,7 @@ fun NewsTabRow(onTabSelected: (sourceID: String) -> Unit) {
     LaunchedEffect(Unit) {
         ApiManager
             .getNewsServices()
-            .getNewsSources(Constants.API_KEY, Constants.TECH_CATEGORY)
+            .getNewsSources(Constants.API_KEY, Constants.CATEGORIES_NAMES[0])
             .enqueue(object : Callback<SourcesResponse> {
                 override fun onResponse(
                     call: Call<SourcesResponse>,
