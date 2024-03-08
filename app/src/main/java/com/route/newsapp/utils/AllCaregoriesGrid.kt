@@ -1,6 +1,7 @@
 package com.route.newsapp.utils
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,17 +27,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.route.newsapp.R
 import com.route.newsapp.model.Category
 import com.route.newsapp.model.Constants
 import com.route.newsapp.ui.theme.Gray
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun AllCategories(modifier: Modifier = Modifier) {
+fun AllCategoriesGrid(navController: NavHostController = rememberNavController()) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .padding(24.dp)
             .fillMaxSize()
     ) {
@@ -52,24 +55,30 @@ fun AllCategories(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            items(Constants.ALL_CATEGORIES.size) {
-                CategoryItem(Constants.ALL_CATEGORIES[it], it)
+            items(Constants.ALL_CATEGORIES.size) { position ->
+                CategoryItem(Constants.ALL_CATEGORIES[position], position) {
+
+                    navController.navigate("News/$position")
+
+                }
             }
         }
     }
 }
 
 @Composable
-fun CategoryItem(category: Category = Category(), index: Int) {
+fun CategoryItem(category: Category = Category(), index: Int, onCardClick: () -> Unit = {}) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = category.color
         ),
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onCardClick() },
         shape = if (index % 2 == 0) {
-            RoundedCornerShape(24.dp, 24.dp, 24.dp, 0.dp)
-        } else {
             RoundedCornerShape(24.dp, 24.dp, 0.dp, 24.dp)
+        } else {
+            RoundedCornerShape(24.dp, 24.dp, 24.dp, 0.dp)
         }
     ) {
         Image(
@@ -85,7 +94,7 @@ fun CategoryItem(category: Category = Category(), index: Int) {
         )
         Text(
             text = stringResource(id = category.titleId),
-            style = TextStyle(Color.White, 22.sp, FontWeight.Normal),
+            style = TextStyle(Color.White, 18.sp, FontWeight.Normal),
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .align(Alignment.CenterHorizontally)

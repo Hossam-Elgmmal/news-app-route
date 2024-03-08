@@ -25,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun NewsTabRow(onTabSelected: (sourceID: String) -> Unit) {
+fun NewsTabRow(categoryIndex: Int, onTabSelected: (sourceID: String) -> Unit) {
     val selectedIndex = remember {
         mutableIntStateOf(0)
     }
@@ -36,7 +36,7 @@ fun NewsTabRow(onTabSelected: (sourceID: String) -> Unit) {
     LaunchedEffect(Unit) {
         ApiManager
             .getNewsServices()
-            .getNewsSources(Constants.API_KEY, Constants.CATEGORIES_NAMES[0])
+            .getNewsSources(Constants.API_KEY, Constants.CATEGORIES_NAMES[categoryIndex])
             .enqueue(object : Callback<SourcesResponse> {
                 override fun onResponse(
                     call: Call<SourcesResponse>,

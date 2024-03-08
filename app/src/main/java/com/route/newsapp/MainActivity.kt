@@ -12,8 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.route.newsapp.ui.theme.NewsAppTheme
-import com.route.newsapp.utils.AllCategories
+import com.route.newsapp.utils.AllCategoriesGrid
 import com.route.newsapp.utils.CategoryContent
 import com.route.newsapp.utils.DrawerSheet
 import com.route.newsapp.utils.NewsAppBar
@@ -39,8 +44,8 @@ fun MainContent() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    ModalNavigationDrawer(drawerState = drawerState,
-
+    ModalNavigationDrawer(
+        drawerState = drawerState,
         drawerContent = {
             DrawerSheet()
         }
@@ -53,12 +58,25 @@ fun MainContent() {
                     }
                 }
             })
-        {
-            AllCategories(
-                Modifier
-                    .padding(top = it.calculateTopPadding())
-            )
-            CategoryContent(Modifier.padding(top = it.calculateTopPadding()))
+        { paddingValues ->
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController, startDestination = "categories",
+                modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
+            ) {
+                composable("categories") {
+                    AllCategoriesGrid(navController)
+                }
+                composable(
+                    "News/{category_index}",
+                    arguments = listOf(navArgument("category_index") {
+                        type = NavType.IntType
+                    })
+                ) { navBackStackEntry ->
+                    val index = navBackStackEntry.arguments?.getInt("category_index") ?: 0
+                    CategoryContent(navController, index)
+                }
+            }
         }
     }
 }

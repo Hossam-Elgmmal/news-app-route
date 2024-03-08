@@ -12,8 +12,9 @@
     <string name="pick_your_category">Pick your category \nof interest</string>
     <string name="sports">Sports</string>
     <string name="science">Science</string>
-    <string name="environment">Environment</string>
+    <string name="technology">Technology</string>
     <string name="business">Business</string>
     <string name="health">Health</string>
-    <string name="politics">Politics</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="no_internet">No Internet!</string>
 </resources>

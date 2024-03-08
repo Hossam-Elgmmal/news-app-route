@@ -12,11 +12,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.route.newsapp.R
 import com.route.newsapp.ui.theme.Green
 
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DrawerSheet() {
     ModalDrawerSheet(
@@ -36,7 +38,8 @@ fun DrawerSheet() {
                 .padding(0.dp, 24.dp)
                 .fillMaxWidth()
         )
-        CustomTextButton(R.drawable.ic_categories, R.string.categories) {}
-        CustomTextButton(R.drawable.ic_settings, R.string.settings) {}
+        CustomDrawerItem(R.drawable.ic_categories, R.string.categories) {}
+        CustomDrawerItem(R.drawable.ic_settings, R.string.settings) {}
+
     }
 }
