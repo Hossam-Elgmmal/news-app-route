@@ -17,4 +17,7 @@
     <string name="health">Health</string>
     <string name="entertainment">Entertainment</string>
     <string name="no_internet">No Internet!</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
 </resources>

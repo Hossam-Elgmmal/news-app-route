@@ -20,10 +20,10 @@ import com.route.newsapp.ui.theme.Green
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DrawerSheet() {
+fun DrawerSheet(onCategoriesClick: () -> Unit = {}, onSettingsClick: () -> Unit = {}) {
     ModalDrawerSheet(
         modifier = Modifier
-            .fillMaxWidth(0.65f)
+            .fillMaxWidth(0.45f)
     ) {
         Text(
             text = stringResource(R.string.drawer_news_app),
@@ -38,8 +38,7 @@ fun DrawerSheet() {
                 .padding(0.dp, 24.dp)
                 .fillMaxWidth()
         )
-        CustomDrawerItem(R.drawable.ic_categories, R.string.categories) {}
-        CustomDrawerItem(R.drawable.ic_settings, R.string.settings) {}
-
+        CustomDrawerItem(R.drawable.ic_categories, R.string.categories, onCategoriesClick)
+        CustomDrawerItem(R.drawable.ic_settings, R.string.settings, onSettingsClick)
     }
 }
