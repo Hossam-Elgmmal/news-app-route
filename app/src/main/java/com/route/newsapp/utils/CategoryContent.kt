@@ -24,8 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.route.newsapp.R
 import com.route.newsapp.api.ApiManager
 import com.route.newsapp.model.ArticlesItem
@@ -36,13 +38,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun CategoryContent(vavController: NavHostController, categoryIndex: Int = 0) {
+fun CategoryContent(
+    vavController: NavHostController = rememberNavController(),
+    categoryIndex: Int = 0
+) {
 
     val newsArticles = remember { mutableStateListOf<ArticlesItem>() }
     var loading by remember { mutableStateOf(true) }
-    var notFound by remember { mutableStateOf(false) }
+
     var internetAvailable by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val connectivityManager =
@@ -79,7 +84,7 @@ fun CategoryContent(vavController: NavHostController, categoryIndex: Int = 0) {
 
                     override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
                         loading = false
-                        notFound = true /////////
+
                     }
                 })
 
@@ -92,9 +97,6 @@ fun CategoryContent(vavController: NavHostController, categoryIndex: Int = 0) {
         if (!internetAvailable) {
             NoWifi()
         }
-
-
-
 
         AllCards(newsArticles)
     }

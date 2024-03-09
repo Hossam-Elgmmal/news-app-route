@@ -3,6 +3,7 @@ package com.route.newsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,22 +15,29 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.route.newsapp.model.Constants
 import com.route.newsapp.ui.theme.NewsAppTheme
 import com.route.newsapp.utils.AllCategoriesGrid
 import com.route.newsapp.utils.CategoryContent
 import com.route.newsapp.utils.DrawerSheet
 import com.route.newsapp.utils.NewsAppBar
+import com.route.newsapp.utils.SearchBox
 import com.route.newsapp.utils.SettingsScreen
 import kotlinx.coroutines.launch
 
@@ -52,6 +60,13 @@ fun MainContent() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    var toolbarTitle by remember {
+        mutableStateOf("")
+    }
+    toolbarTitle = stringResource(id = R.string.news_app)
+    var isSearchVisible by remember { mutableStateOf(false) }
+    var isSearchFieldVisible by remember { mutableStateOf(false) }
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -85,76 +100,74 @@ fun MainContent() {
     ) {
         Scaffold(
             topBar = {
-                NewsAppBar {
+
+                NewsAppBar(isSearchVisible, toolbarTitle,
+                    onSearchClick = {
+                        isSearchFieldVisible = true
+                    }
+                ) {
                     scope.launch {
                         drawerState.open()
                     }
                 }
-            })
-        { paddingValues ->
+                AnimatedVisibility(
+                    visible = isSearchFieldVisible,
+                    enter = slideInHorizontally(tween(300)) { it } + fadeIn(tween(300)),
+                    exit = slideOutHorizontally(tween(300)) { it } + fadeOut(tween(300))
+                ) {
+                    SearchBox { isSearchFieldVisible = false }
+                }
+            }
+
+        ) { paddingValues ->
 
             NavHost(
                 navController = navController, startDestination = "categories",
                 modifier = Modifier
-                    .padding(top = paddingValues.calculateTopPadding())
                     .paint(
                         painterResource(id = R.drawable.image_pattern),
                         contentScale = ContentScale.FillBounds
                     )
+                    .padding(top = paddingValues.calculateTopPadding()),
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(300)
+                    ) + fadeIn(animationSpec = tween(300))
+                },
+                exitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { it },
+                        animationSpec = tween(300)
+                    ) + fadeOut(tween(300))
+                }
             ) {
                 composable(
-                    "categories",
-                    enterTransition = {
-                        slideInHorizontally(
-                            initialOffsetX = { it },
-                            animationSpec = tween(durationMillis = 300)
-                        ) + fadeIn(animationSpec = tween(durationMillis = 300))
-                    },
-                    exitTransition = {
-                        slideOutHorizontally(
-                            targetOffsetX = { it },
-                            animationSpec = tween(durationMillis = 300)
-                        ) + fadeOut(animationSpec = tween(durationMillis = 300))
-                    }
+                    "categories"
                 ) {
+                    toolbarTitle = stringResource(R.string.news_app)
+                    isSearchFieldVisible = false
+                    isSearchVisible = false
                     AllCategoriesGrid(navController)
                 }
                 composable(
                     "News/{category_index}",
                     arguments = listOf(navArgument("category_index") {
                         type = NavType.IntType
-                    }),
-                    enterTransition = {
-                        slideInHorizontally(
-                            initialOffsetX = { it },
-                            animationSpec = tween(durationMillis = 300)
-                        ) + fadeIn(animationSpec = tween(durationMillis = 300))
-                    },
-                    exitTransition = {
-                        slideOutHorizontally(
-                            targetOffsetX = { it },
-                            animationSpec = tween(durationMillis = 300)
-                        ) + fadeOut(animationSpec = tween(durationMillis = 300))
-                    }
+                    })
                 ) { navBackStackEntry ->
                     val index = navBackStackEntry.arguments?.getInt("category_index") ?: 0
+                    toolbarTitle = stringResource(Constants.ALL_CATEGORIES[index].titleId)
+                    isSearchVisible = true
+                    isSearchFieldVisible = false
                     CategoryContent(navController, index)
                 }
                 composable(
-                    "settings",
-                    enterTransition = {
-                        slideInHorizontally(
-                            initialOffsetX = { it },
-                            animationSpec = tween(300)
-                        ) + fadeIn(animationSpec = tween(300))
-                    },
-                    exitTransition = {
-                        slideOutHorizontally(
-                            targetOffsetX = { it },
-                            animationSpec = tween(300)
-                        ) + fadeOut(tween(300))
-                    }
+                    "settings"
                 ) {
+                    toolbarTitle = stringResource(id = R.string.settings)
+                    isSearchFieldVisible = false
+                    isSearchVisible = false
                     SettingsScreen()
                 }
             }

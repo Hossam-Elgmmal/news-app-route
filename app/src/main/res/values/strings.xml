@@ -20,4 +20,6 @@
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="arabic">العربية</string>
+    <string name="search">search</string>
+    <string name="close">close</string>
 </resources>
