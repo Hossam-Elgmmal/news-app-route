@@ -2,7 +2,6 @@ package com.route.newsapp.utils
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,7 +34,7 @@ import com.route.newsapp.ui.theme.Green
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SearchBox(onCloseClick: () -> Unit = {}) {
+fun SearchBox(onSearch: (String) -> Unit = {}, onCloseClick: () -> Unit = {}) {
 
     var textValue by remember {
         mutableStateOf("")
@@ -44,9 +43,10 @@ fun SearchBox(onCloseClick: () -> Unit = {}) {
     val view = LocalView.current
     val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp, 4.dp))
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp, 4.dp))
     {
         OutlinedTextField(
             value = textValue,
@@ -73,8 +73,8 @@ fun SearchBox(onCloseClick: () -> Unit = {}) {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    Toast.makeText(context, textValue, Toast.LENGTH_SHORT).show()
                     inputManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                    onSearch(textValue)
                 }
             ),
             colors = TextFieldDefaults.colors(

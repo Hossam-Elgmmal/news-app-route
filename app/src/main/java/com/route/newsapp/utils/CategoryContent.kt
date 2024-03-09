@@ -41,12 +41,14 @@ import retrofit2.Response
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun CategoryContent(
+    searchText: String = "",
     vavController: NavHostController = rememberNavController(),
     categoryIndex: Int = 0
 ) {
 
     val newsArticles = remember { mutableStateListOf<ArticlesItem>() }
     var loading by remember { mutableStateOf(true) }
+    var myText by remember { mutableStateOf("") }
 
     var internetAvailable by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -96,6 +98,30 @@ fun CategoryContent(
         }
         if (!internetAvailable) {
             NoWifi()
+        }
+        if (myText != searchText.trim()) {
+            myText = searchText
+
+            ApiManager.getNewsServices().searchEverything(Constants.API_KEY, myText)
+                .enqueue(object : Callback<ArticlesResponse> {
+                    override fun onResponse(
+                        call: Call<ArticlesResponse>,
+                        response: Response<ArticlesResponse>
+                    ) {
+                        newsArticles.clear()
+                        val articles = response.body()?.articles
+                        if (articles?.isNotEmpty() == true) {
+                            newsArticles.addAll(articles)
+                        }
+                        loading = false
+
+                    }
+
+                    override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
+                        loading = false
+                    }
+                })
+
         }
 
         AllCards(newsArticles)

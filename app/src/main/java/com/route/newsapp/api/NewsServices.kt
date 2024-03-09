@@ -30,4 +30,15 @@ interface NewsServices {
         sourcesId: String
 
     ): Call<ArticlesResponse>
+
+    @GET("everything")
+    fun searchEverything(
+
+        @Query("apikey")
+        apiKey: String,
+
+        @Query("q")
+        searchText: String
+
+    ): Call<ArticlesResponse>
 }

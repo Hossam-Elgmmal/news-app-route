@@ -66,7 +66,9 @@ fun MainContent() {
     toolbarTitle = stringResource(id = R.string.news_app)
     var isSearchVisible by remember { mutableStateOf(false) }
     var isSearchFieldVisible by remember { mutableStateOf(false) }
-
+    var searchText by remember {
+        mutableStateOf("")
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -115,7 +117,10 @@ fun MainContent() {
                     enter = slideInHorizontally(tween(300)) { it } + fadeIn(tween(300)),
                     exit = slideOutHorizontally(tween(300)) { it } + fadeOut(tween(300))
                 ) {
-                    SearchBox { isSearchFieldVisible = false }
+                    SearchBox(onSearch = { text ->
+                        searchText = text
+                        isSearchFieldVisible = false
+                    }) { isSearchFieldVisible = false }
                 }
             }
 
@@ -160,7 +165,7 @@ fun MainContent() {
                     toolbarTitle = stringResource(Constants.ALL_CATEGORIES[index].titleId)
                     isSearchVisible = true
                     isSearchFieldVisible = false
-                    CategoryContent(navController, index)
+                    CategoryContent(searchText, navController, index)
                 }
                 composable(
                     "settings"
