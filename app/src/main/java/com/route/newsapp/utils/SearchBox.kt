@@ -14,12 +14,15 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -43,11 +46,17 @@ fun SearchBox(onSearch: (String) -> Unit = {}, onCloseClick: () -> Unit = {}) {
     val view = LocalView.current
     val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
+    val focusRequester = remember {
+        FocusRequester()
+    }
+    LaunchedEffect(key1 = Unit) {
+        focusRequester.requestFocus()
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 4.dp))
-    {
+            .padding(8.dp, 4.dp)
+    ) {
         OutlinedTextField(
             value = textValue,
             onValueChange = {
@@ -97,6 +106,7 @@ fun SearchBox(onSearch: (String) -> Unit = {}, onCloseClick: () -> Unit = {}) {
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .fillMaxWidth(0.9f)
+                .focusRequester(focusRequester)
 
         )
     }

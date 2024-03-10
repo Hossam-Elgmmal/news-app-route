@@ -22,4 +22,6 @@
     <string name="arabic">العربية</string>
     <string name="search">search</string>
     <string name="close">close</string>
+    <string name="article">Article</string>
+    <string name="view_article">View Full Article</string>
 </resources>

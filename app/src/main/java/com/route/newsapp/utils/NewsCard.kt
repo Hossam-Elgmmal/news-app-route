@@ -1,5 +1,6 @@
 package com.route.newsapp.utils
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,10 +28,12 @@ import com.route.newsapp.model.ArticlesItem
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NewsCard(article: ArticlesItem) {
+fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
 
     Card(
-        modifier = Modifier.padding(24.dp, 16.dp),
+        modifier = Modifier
+            .padding(24.dp, 16.dp)
+            .clickable { onCardClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         ),

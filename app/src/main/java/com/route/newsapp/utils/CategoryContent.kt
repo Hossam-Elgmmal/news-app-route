@@ -42,7 +42,7 @@ import retrofit2.Response
 @Composable
 fun CategoryContent(
     searchText: String = "",
-    vavController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
     categoryIndex: Int = 0
 ) {
 
@@ -124,7 +124,9 @@ fun CategoryContent(
 
         }
 
-        AllCards(newsArticles)
+        AllCards(newsArticles) { articleTitle ->
+            navController.navigate("article-details/$articleTitle")
+        }
     }
 }
 

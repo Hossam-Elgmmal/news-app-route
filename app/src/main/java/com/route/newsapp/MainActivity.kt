@@ -34,6 +34,7 @@ import androidx.navigation.navArgument
 import com.route.newsapp.model.Constants
 import com.route.newsapp.ui.theme.NewsAppTheme
 import com.route.newsapp.utils.AllCategoriesGrid
+import com.route.newsapp.utils.ArticleDetails
 import com.route.newsapp.utils.CategoryContent
 import com.route.newsapp.utils.DrawerSheet
 import com.route.newsapp.utils.NewsAppBar
@@ -174,6 +175,18 @@ fun MainContent() {
                     isSearchFieldVisible = false
                     isSearchVisible = false
                     SettingsScreen()
+                }
+                composable(
+                    "article-details/{article-title}",
+                    arguments = listOf(navArgument("article-title") {
+                        type = NavType.StringType
+                    })
+                ) {
+                    val articleTitle = it.arguments?.getString("article-title") ?: ""
+                    toolbarTitle = stringResource(id = R.string.article)
+                    isSearchFieldVisible = false
+                    isSearchVisible = false
+                    ArticleDetails(articleTitle)
                 }
             }
         }
