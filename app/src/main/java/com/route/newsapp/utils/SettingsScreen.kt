@@ -1,6 +1,7 @@
 package com.route.newsapp.utils
 
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import com.route.newsapp.R
 import com.route.newsapp.ui.theme.Green
 
@@ -37,11 +39,15 @@ import com.route.newsapp.ui.theme.Green
 @Composable
 fun SettingsScreen() {
     var expanded by remember { mutableStateOf(false) }
-    var text by remember {
-        mutableStateOf("language")
-    }
     val context = LocalContext.current
 
+    val langCode by remember {
+        mutableStateOf(
+            context.getString(
+                R.string.lang_code
+            )
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,15 +68,20 @@ fun SettingsScreen() {
                 expanded = expanded,
                 onExpandedChange = {
                     expanded = !expanded
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(0.dp)
             ) {
                 OutlinedTextField(
-                    value = stringResource(id = R.string.english),
+                    value = stringResource(id = R.string.chosen_lang),
                     onValueChange = {},
                     readOnly = true,
                     shape = RectangleShape,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier.menuAnchor(),
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         unfocusedContainerColor = White,
                         unfocusedTextColor = Green,
@@ -86,14 +97,17 @@ fun SettingsScreen() {
 
                 ExposedDropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.background(White)
                 ) {
 
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.arabic)) },
+                        text = { Text(text = stringResource(id = R.string.lang)) },
                         onClick = {
                             expanded = false
-                            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                            AppCompatDelegate.setApplicationLocales(
+                                LocaleListCompat.forLanguageTags(langCode)
+                            )
                         }
                     )
 

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -90,6 +91,7 @@ fun ArticlesResponseDetails(article: ArticlesItem = ArticlesItem()) {
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .fillMaxSize()
+                .aspectRatio(2f)
 
 
         )

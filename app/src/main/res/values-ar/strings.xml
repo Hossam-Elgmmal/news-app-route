@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">News App</string>
+    <string name="news_app">تطبيق الأخبار</string>
+    <string name="signature">توقيع</string>
+    <string name="categories">المجالات</string>
+    <string name="settings">الإعدادات</string>
+    <string name="drawer_news_app">تطبيق الأخبار</string>
+    <string name="news_image">صورة الخبر</string>
+    <string name="pick_your_category">اختر مجالك\nالمفضل</string>
+    <string name="sports">الرياضة</string>
+    <string name="science">العلوم</string>
+    <string name="technology">التكنولوجيا</string>
+    <string name="business">الأعمال</string>
+    <string name="health">الصحة</string>
+    <string name="entertainment">الترفيه</string>
+    <string name="no_internet">لا انترنت</string>
+    <string name="language">اللغة</string>
+    <string name="chosen_lang">العربية</string>
+    <string name="lang">English</string>
+    <string name="lang_code">en</string>
+    <string name="search">بحث</string>
+    <string name="close">اغلاق</string>
+    <string name="article">مقالة</string>
+    <string name="view_article">اعرض كامل المقالة</string>
+</resources>
