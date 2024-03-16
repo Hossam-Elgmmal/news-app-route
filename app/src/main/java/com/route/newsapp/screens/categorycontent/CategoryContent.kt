@@ -1,4 +1,4 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.categorycontent
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -30,9 +30,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.route.newsapp.R
 import com.route.newsapp.api.ApiManager
-import com.route.newsapp.model.ArticlesItem
-import com.route.newsapp.model.ArticlesResponse
-import com.route.newsapp.model.Constants
+import com.route.newsapp.models.articles.ArticlesItem
+import com.route.newsapp.models.articles.ArticlesResponse
+import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Green
 import retrofit2.Call
 import retrofit2.Callback

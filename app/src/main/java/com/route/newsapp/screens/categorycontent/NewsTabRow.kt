@@ -1,4 +1,4 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.categorycontent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.route.newsapp.api.ApiManager
-import com.route.newsapp.model.Constants
-import com.route.newsapp.model.SourcesItem
-import com.route.newsapp.model.SourcesResponse
+import com.route.newsapp.models.categories.Constants
+import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourcesResponse
 import com.route.newsapp.ui.theme.Green
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,6 +1,7 @@
-package com.route.newsapp.model
+package com.route.newsapp.models.articles
 
 import com.google.gson.annotations.SerializedName
+import com.route.newsapp.models.sources.Source
 
 data class ArticlesItem(
 

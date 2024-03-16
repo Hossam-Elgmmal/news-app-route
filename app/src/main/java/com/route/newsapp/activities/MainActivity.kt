@@ -1,4 +1,4 @@
-package com.route.newsapp
+package com.route.newsapp.activities
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -31,15 +31,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.route.newsapp.model.Constants
+import com.route.newsapp.R
+import com.route.newsapp.models.categories.Constants
+import com.route.newsapp.screens.allcategories.AllCategoriesGrid
+import com.route.newsapp.screens.articledetail.ArticleDetails
+import com.route.newsapp.screens.categorycontent.CategoryContent
+import com.route.newsapp.screens.settings.SettingsScreen
 import com.route.newsapp.ui.theme.NewsAppTheme
-import com.route.newsapp.utils.AllCategoriesGrid
-import com.route.newsapp.utils.ArticleDetails
-import com.route.newsapp.utils.CategoryContent
 import com.route.newsapp.utils.DrawerSheet
 import com.route.newsapp.utils.NewsAppBar
 import com.route.newsapp.utils.SearchBox
-import com.route.newsapp.utils.SettingsScreen
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {

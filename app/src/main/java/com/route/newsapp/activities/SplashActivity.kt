@@ -1,4 +1,4 @@
-package com.route.newsapp
+package com.route.newsapp.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.route.newsapp.R
 import com.route.newsapp.ui.theme.NewsAppTheme
 
 

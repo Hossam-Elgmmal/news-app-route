@@ -1,4 +1,4 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.allcategories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.route.newsapp.R
-import com.route.newsapp.model.Category
-import com.route.newsapp.model.Constants
+import com.route.newsapp.models.categories.CategoryItem
+import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Gray
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -67,10 +67,14 @@ fun AllCategoriesGrid(navController: NavHostController = rememberNavController()
 }
 
 @Composable
-fun CategoryItem(category: Category = Category(), index: Int, onCardClick: () -> Unit = {}) {
+fun CategoryItem(
+    categoryItem: CategoryItem = CategoryItem(),
+    index: Int,
+    onCardClick: () -> Unit = {}
+) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = category.color
+            containerColor = categoryItem.color
         ),
         modifier = Modifier
             .padding(8.dp)
@@ -82,8 +86,8 @@ fun CategoryItem(category: Category = Category(), index: Int, onCardClick: () ->
         }
     ) {
         Image(
-            painter = painterResource(id = category.imageId),
-            contentDescription = stringResource(id = category.titleId),
+            painter = painterResource(id = categoryItem.imageId),
+            contentDescription = stringResource(id = categoryItem.titleId),
 
             modifier = Modifier
                 .padding(16.dp)
@@ -93,7 +97,7 @@ fun CategoryItem(category: Category = Category(), index: Int, onCardClick: () ->
             contentScale = ContentScale.Fit
         )
         Text(
-            text = stringResource(id = category.titleId),
+            text = stringResource(id = categoryItem.titleId),
             style = TextStyle(Color.White, 18.sp, FontWeight.Normal),
             modifier = Modifier
                 .padding(bottom = 16.dp)

@@ -1,10 +1,11 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.categorycontent
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,7 +25,19 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.newsapp.R
-import com.route.newsapp.model.ArticlesItem
+import com.route.newsapp.models.articles.ArticlesItem
+
+@Composable
+fun AllCards(articles: List<ArticlesItem>, onCardClick: (String) -> Unit) {
+
+    LazyColumn {
+        items(articles.size) { position ->
+            NewsCard(articles[position]) {
+                articles[position].title?.let { onCardClick(it) }
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

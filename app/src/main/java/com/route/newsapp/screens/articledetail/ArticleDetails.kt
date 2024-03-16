@@ -1,4 +1,4 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.articledetail
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -32,9 +32,9 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.newsapp.R
 import com.route.newsapp.api.ApiManager
-import com.route.newsapp.model.ArticlesItem
-import com.route.newsapp.model.ArticlesResponse
-import com.route.newsapp.model.Constants
+import com.route.newsapp.models.articles.ArticlesItem
+import com.route.newsapp.models.articles.ArticlesResponse
+import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Gray
 import retrofit2.Call
 import retrofit2.Callback
