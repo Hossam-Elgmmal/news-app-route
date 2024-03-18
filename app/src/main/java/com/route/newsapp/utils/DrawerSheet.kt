@@ -3,11 +3,15 @@ package com.route.newsapp.utils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -23,7 +27,7 @@ import com.route.newsapp.ui.theme.Green
 fun DrawerSheet(onCategoriesClick: () -> Unit = {}, onSettingsClick: () -> Unit = {}) {
     ModalDrawerSheet(
         modifier = Modifier
-            .fillMaxWidth(0.45f)
+            .fillMaxWidth(0.65f)
     ) {
         Text(
             text = stringResource(R.string.drawer_news_app),
@@ -41,4 +45,28 @@ fun DrawerSheet(onCategoriesClick: () -> Unit = {}, onSettingsClick: () -> Unit 
         CustomDrawerItem(R.drawable.ic_categories, R.string.categories, onCategoriesClick)
         CustomDrawerItem(R.drawable.ic_settings, R.string.settings, onSettingsClick)
     }
+}
+
+@Composable
+fun CustomDrawerItem(iconId: Int, textId: Int, onClick: () -> Unit) {
+    NavigationDrawerItem(
+        label = {
+            Text(
+                text = stringResource(id = textId), style = TextStyle(
+                    Color.Black, 18.sp,
+                    FontWeight.Bold
+                )
+            )
+        },
+        icon = {
+            Icon(
+                painter = painterResource(id = iconId),
+                contentDescription = stringResource(id = textId),
+                tint = Color.Black
+            )
+        },
+        shape = RoundedCornerShape(16.dp),
+        selected = false,
+        onClick = onClick
+    )
 }

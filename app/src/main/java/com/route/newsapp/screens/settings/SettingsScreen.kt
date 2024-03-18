@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -37,7 +38,7 @@ import com.route.newsapp.ui.theme.Green
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(onNavigationIconClick: () -> Unit = {}) {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -48,69 +49,81 @@ fun SettingsScreen() {
             )
         )
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp)
+    Scaffold(
+        topBar = {
+            SettingsAppBar {
+
+            }
+        },
+        containerColor = Color.Transparent
     ) {
-        Text(
-            text = stringResource(id = R.string.language), style = TextStyle(
-                Color.Black, 22.sp,
-                FontWeight.Bold
-            ), modifier = Modifier.padding(16.dp)
-        )
-        Box(
+
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(32.dp)
+                .padding(top = it.calculateTopPadding())
+                .fillMaxSize()
+                .padding(24.dp)
         ) {
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = {
-                    expanded = !expanded
-                },
+            Text(
+                text = stringResource(id = R.string.language), style = TextStyle(
+                    Color.Black, 22.sp,
+                    FontWeight.Bold
+                ), modifier = Modifier.padding(16.dp)
+            )
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(0.dp)
+                    .fillMaxWidth()
+                    .padding(32.dp)
             ) {
-                OutlinedTextField(
-                    value = stringResource(id = R.string.chosen_lang),
-                    onValueChange = {},
-                    readOnly = true,
-                    shape = RectangleShape,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = White,
-                        unfocusedTextColor = Green,
-                        unfocusedIndicatorColor = Green,
-                        unfocusedTrailingIconColor = Green,
-                        focusedContainerColor = White,
-                        focusedTextColor = Green,
-                        focusedIndicatorColor = Green,
-                        focusedTrailingIconColor = Green,
-
-                        )
-                )
-
-                ExposedDropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                    modifier = Modifier.background(White)
+                    onExpandedChange = {
+                        expanded = !expanded
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(0.dp)
                 ) {
+                    OutlinedTextField(
+                        value = stringResource(id = R.string.chosen_lang),
+                        onValueChange = {},
+                        readOnly = true,
+                        shape = RectangleShape,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = White,
+                            unfocusedTextColor = Green,
+                            unfocusedIndicatorColor = Green,
+                            unfocusedTrailingIconColor = Green,
+                            focusedContainerColor = White,
+                            focusedTextColor = Green,
+                            focusedIndicatorColor = Green,
+                            focusedTrailingIconColor = Green,
 
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.lang)) },
-                        onClick = {
-                            expanded = false
-                            AppCompatDelegate.setApplicationLocales(
-                                LocaleListCompat.forLanguageTags(langCode)
                             )
-                        }
                     )
 
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.background(White)
+                    ) {
+
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.lang)) },
+                            onClick = {
+                                expanded = false
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.forLanguageTags(langCode)
+                                )
+                            }
+                        )
+
+                    }
                 }
             }
         }

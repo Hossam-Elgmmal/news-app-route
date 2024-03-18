@@ -24,7 +24,6 @@ class CategoryContentViewModel : ViewModel() {
 
     val newsArticles = mutableStateListOf<ArticlesItem>()
     var loading by mutableStateOf(false)
-    var myText by mutableStateOf("")
 
     var internetAvailable by mutableStateOf(false)
 
@@ -33,6 +32,11 @@ class CategoryContentViewModel : ViewModel() {
     val sourcesNamesList = mutableStateListOf<SourcesItem>()
 
     var categoryIndex by mutableIntStateOf(0)
+
+    var isSearchFieldVisible by mutableStateOf(false)
+
+    var myText by mutableStateOf("")
+    var searchText by mutableStateOf("")
 
     fun checkConnection(context: Context) {
         val connectivityManager =

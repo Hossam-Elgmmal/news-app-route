@@ -4,16 +4,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,30 +37,44 @@ import com.route.newsapp.ui.theme.Gray
     device = "id:pixel_8_pro", showSystemUi = true, showBackground = true
 )
 @Composable
-fun AllCategoriesScreen(navController: NavHostController = rememberNavController()) {
+fun AllCategoriesScreen(
+    navController: NavHostController = rememberNavController(),
+    onNavigationIconClick: () -> Unit = {}
+) {
 
-    Column {
+    Scaffold(
+        topBar = {
+            CategoriesAppBar {
+                onNavigationIconClick()
+            }
+        },
+        containerColor = Color.Transparent
+    ) { paddingValues ->
 
-        Text(
-            text = stringResource(R.string.pick_your_category),
-            style = TextStyle(Gray, 24.sp, FontWeight.Bold),
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding())
                 .padding(24.dp)
-        )
-
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(150.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(start = 24.dp, top = 16.dp, end = 24.dp)
         ) {
-            items(Constants.ALL_CATEGORIES.size) { position ->
-                CategoryItem(Constants.ALL_CATEGORIES[position], position) {
 
-                    navController.navigate("News/$position")
+            Text(
+                text = stringResource(R.string.pick_your_category),
+                style = TextStyle(Gray, 24.sp, FontWeight.Bold)
+            )
 
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(150.dp),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                modifier = Modifier.padding(24.dp)
+            ) {
+                items(Constants.ALL_CATEGORIES.size) { position ->
+                    CategoryItem(Constants.ALL_CATEGORIES[position], position) {
+
+                        navController.navigate("News/$position")
+
+                    }
                 }
             }
         }

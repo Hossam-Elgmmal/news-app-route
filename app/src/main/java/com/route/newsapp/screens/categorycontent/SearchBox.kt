@@ -1,4 +1,4 @@
-package com.route.newsapp.utils
+package com.route.newsapp.screens.categorycontent
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
@@ -42,6 +42,7 @@ fun SearchBox(onSearch: (String) -> Unit = {}, onCloseClick: () -> Unit = {}) {
     var textValue by remember {
         mutableStateOf("")
     }
+
     val context = LocalContext.current
     val view = LocalView.current
     val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager

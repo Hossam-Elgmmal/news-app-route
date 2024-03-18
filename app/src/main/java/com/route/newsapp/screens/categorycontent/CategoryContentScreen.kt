@@ -1,5 +1,11 @@
 package com.route.newsapp.screens.categorycontent
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,9 +36,9 @@ import com.route.newsapp.ui.theme.Green
 @Composable
 fun CategoryContentScreen(
     vm: CategoryContentViewModel = viewModel(),
-    searchText: String = "",
     navController: NavHostController = rememberNavController(),
-    categoryIndex: Int = 0
+    categoryIndex: Int = 0,
+    onNavigationIconClick: () -> Unit = {}
 ) {
 
     val context = LocalContext.current
@@ -41,26 +48,47 @@ fun CategoryContentScreen(
         vm.checkConnection(context)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-
+    Scaffold(
+        topBar = {
+            CategoryContentAppBar(categoryIndex, onNavigationIconClick) {
+                vm.isSearchFieldVisible = true
+            }
+            AnimatedVisibility(
+                visible = vm.isSearchFieldVisible,
+                enter = slideInHorizontally(tween(300)) { it } + fadeIn(tween(300)),
+                exit = slideOutHorizontally(tween(300)) { it } + fadeOut(tween(300))
+            ) {
+                SearchBox(onSearch = { text ->
+                    vm.searchText = text
+                    vm.isSearchFieldVisible = false
+                }) { vm.isSearchFieldVisible = false }
+            }
+        },
+        containerColor = Color.Transparent
     ) {
 
-        NewsTabRow(vm)
+        Column(
+            modifier = Modifier
+                .padding(top = it.calculateTopPadding())
+                .fillMaxSize()
 
-        if (vm.internetAvailable && vm.loading) Load()
+        ) {
 
-        if (!vm.internetAvailable) NoWifi()
+            NewsTabRow(vm)
 
-        if (vm.myText != searchText.trim()) {
+            if (vm.internetAvailable && vm.loading) Load()
 
-            vm.myText = searchText
-            vm.search()
-        }
+            if (!vm.internetAvailable) NoWifi()
 
-        AllCards(vm.newsArticles) { articleTitle ->
-            navController.navigate("article-details/$articleTitle")
+            if (vm.myText != vm.searchText.trim()) {
+
+                vm.myText = vm.searchText
+                vm.search()
+            }
+
+            AllCards(vm.newsArticles) { articleTitle ->
+                navController.navigate("article-details/$articleTitle")
+            }
         }
     }
 }
