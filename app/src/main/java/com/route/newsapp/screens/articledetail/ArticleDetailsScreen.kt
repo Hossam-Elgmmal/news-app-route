@@ -1,8 +1,6 @@
 package com.route.newsapp.screens.articledetail
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,8 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,45 +24,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.newsapp.R
-import com.route.newsapp.api.ApiManager
 import com.route.newsapp.models.articles.ArticlesItem
-import com.route.newsapp.models.articles.ArticlesResponse
-import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Gray
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 @Composable
-fun ArticleDetails(articleTitle: String) {
-    val newsArticles = remember {
-        mutableStateListOf<ArticlesItem>()
-    }
+fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = viewModel(), articleTitle: String) {
+
     LaunchedEffect(key1 = Unit) {
-        ApiManager.getNewsServices().searchEverything(Constants.API_KEY, articleTitle)
-            .enqueue(object : Callback<ArticlesResponse> {
-                override fun onResponse(
-                    call: Call<ArticlesResponse>,
-                    response: Response<ArticlesResponse>
-                ) {
-                    val articles = response.body()?.articles
-                    articles?.let { newsArticles.addAll(it) }
-                }
-
-                override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-
-                }
-            })
+        vm.getArticle(articleTitle)
     }
 
     LazyColumn {
         item {
-            if (newsArticles.size > 0) {
-                ArticlesResponseDetails(newsArticles[0])
+            if (vm.newsArticles.size > 0) {
+                ArticlesResponseDetails(vm, vm.newsArticles[0])
             }
         }
     }
@@ -76,7 +52,10 @@ fun ArticleDetails(articleTitle: String) {
 @Preview(showSystemUi = true, showBackground = true)
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ArticlesResponseDetails(article: ArticlesItem = ArticlesItem()) {
+fun ArticlesResponseDetails(
+    vm: ArticleDetailsViewModel = viewModel(),
+    article: ArticlesItem = ArticlesItem()
+) {
     val context = LocalContext.current
 
     Column(
@@ -92,7 +71,6 @@ fun ArticlesResponseDetails(article: ArticlesItem = ArticlesItem()) {
             modifier = Modifier
                 .fillMaxSize()
                 .aspectRatio(2f)
-
 
         )
 
@@ -127,11 +105,12 @@ fun ArticlesResponseDetails(article: ArticlesItem = ArticlesItem()) {
                 .align(Alignment.End),
             style = TextStyle(fontSize = 13.sp, color = Color.Gray)
         )
-        TextButton(onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
-            context.startActivity(intent)
-
-        }, Modifier.align(Alignment.End)) {
+        TextButton(
+            onClick = {
+                vm.openInBrowser(context, article.url)
+            },
+            modifier = Modifier.align(Alignment.End)
+        ) {
             Text(
                 text = article.source?.name ?: "",
                 modifier = Modifier

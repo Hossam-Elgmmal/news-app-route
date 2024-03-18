@@ -4,20 +4,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -34,26 +34,28 @@ import com.route.newsapp.models.categories.CategoryItem
 import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Gray
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    device = "id:pixel_8_pro", showSystemUi = true, showBackground = true
+)
 @Composable
-fun AllCategoriesGrid(navController: NavHostController = rememberNavController()) {
+fun AllCategoriesScreen(navController: NavHostController = rememberNavController()) {
 
-    Column(
-        modifier = Modifier
-            .padding(24.dp)
-            .fillMaxSize()
-    ) {
+    Column {
 
         Text(
             text = stringResource(R.string.pick_your_category),
-            style = TextStyle(Gray, 22.sp, FontWeight.Bold)
+            style = TextStyle(Gray, 24.sp, FontWeight.Bold),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
         )
 
         LazyVerticalGrid(
-            columns = GridCells.FixedSize(150.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            columns = GridCells.Adaptive(150.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(start = 24.dp, top = 16.dp, end = 24.dp)
         ) {
             items(Constants.ALL_CATEGORIES.size) { position ->
                 CategoryItem(Constants.ALL_CATEGORIES[position], position) {
@@ -76,29 +78,26 @@ fun CategoryItem(
         colors = CardDefaults.cardColors(
             containerColor = categoryItem.color
         ),
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onCardClick() },
         shape = if (index % 2 == 0) {
             RoundedCornerShape(24.dp, 24.dp, 0.dp, 24.dp)
         } else {
             RoundedCornerShape(24.dp, 24.dp, 24.dp, 0.dp)
-        }
+        },
+        modifier = Modifier
+            .clickable { onCardClick() }
     ) {
         Image(
             painter = painterResource(id = categoryItem.imageId),
             contentDescription = stringResource(id = categoryItem.titleId),
-
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
-                .aspectRatio(1f)
-                .clip(MaterialTheme.shapes.extraSmall),
+                .aspectRatio(1f),
             contentScale = ContentScale.Fit
         )
         Text(
             text = stringResource(id = categoryItem.titleId),
-            style = TextStyle(Color.White, 18.sp, FontWeight.Normal),
+            style = TextStyle(Color.White, 20.sp, FontWeight.Normal),
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .align(Alignment.CenterHorizontally)

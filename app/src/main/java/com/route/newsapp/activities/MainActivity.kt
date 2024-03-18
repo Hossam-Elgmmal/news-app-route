@@ -15,17 +15,14 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,9 +30,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.route.newsapp.R
 import com.route.newsapp.models.categories.Constants
-import com.route.newsapp.screens.allcategories.AllCategoriesGrid
-import com.route.newsapp.screens.articledetail.ArticleDetails
-import com.route.newsapp.screens.categorycontent.CategoryContent
+import com.route.newsapp.screens.allcategories.AllCategoriesScreen
+import com.route.newsapp.screens.articledetail.ArticleDetailsScreen
+import com.route.newsapp.screens.categorycontent.CategoryContentScreen
 import com.route.newsapp.screens.settings.SettingsScreen
 import com.route.newsapp.ui.theme.NewsAppTheme
 import com.route.newsapp.utils.DrawerSheet
@@ -56,21 +53,13 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, device = "id:pixel_8_pro")
 @Composable
-fun MainContent() {
+fun MainContent(vm: MainActivityViewModel = viewModel()) {
+
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    var toolbarTitle by remember {
-        mutableStateOf("")
-    }
-    toolbarTitle = stringResource(id = R.string.news_app)
-    var isSearchVisible by remember { mutableStateOf(false) }
-    var isSearchFieldVisible by remember { mutableStateOf(false) }
-    var searchText by remember {
-        mutableStateOf("")
-    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -105,9 +94,10 @@ fun MainContent() {
         Scaffold(
             topBar = {
 
-                NewsAppBar(isSearchVisible, toolbarTitle,
+                NewsAppBar(
+                    vm.isSearchVisible, vm.toolbarTitle,
                     onSearchClick = {
-                        isSearchFieldVisible = true
+                        vm.isSearchFieldVisible = true
                     }
                 ) {
                     scope.launch {
@@ -115,14 +105,14 @@ fun MainContent() {
                     }
                 }
                 AnimatedVisibility(
-                    visible = isSearchFieldVisible,
+                    visible = vm.isSearchFieldVisible,
                     enter = slideInHorizontally(tween(300)) { it } + fadeIn(tween(300)),
                     exit = slideOutHorizontally(tween(300)) { it } + fadeOut(tween(300))
                 ) {
                     SearchBox(onSearch = { text ->
-                        searchText = text
-                        isSearchFieldVisible = false
-                    }) { isSearchFieldVisible = false }
+                        vm.searchText = text
+                        vm.isSearchFieldVisible = false
+                    }) { vm.isSearchFieldVisible = false }
                 }
             }
 
@@ -152,10 +142,10 @@ fun MainContent() {
                 composable(
                     "categories"
                 ) {
-                    toolbarTitle = stringResource(R.string.news_app)
-                    isSearchFieldVisible = false
-                    isSearchVisible = false
-                    AllCategoriesGrid(navController)
+                    vm.toolbarTitle = stringResource(R.string.news_app)
+                    vm.isSearchFieldVisible = false
+                    vm.isSearchVisible = false
+                    AllCategoriesScreen(navController)
                 }
                 composable(
                     "News/{category_index}",
@@ -164,17 +154,21 @@ fun MainContent() {
                     })
                 ) { navBackStackEntry ->
                     val index = navBackStackEntry.arguments?.getInt("category_index") ?: 0
-                    toolbarTitle = stringResource(Constants.ALL_CATEGORIES[index].titleId)
-                    isSearchVisible = true
-                    isSearchFieldVisible = false
-                    CategoryContent(searchText, navController, index)
+                    vm.toolbarTitle = stringResource(Constants.ALL_CATEGORIES[index].titleId)
+                    vm.isSearchVisible = true
+                    vm.isSearchFieldVisible = false
+                    CategoryContentScreen(
+                        searchText = vm.searchText,
+                        navController = navController,
+                        categoryIndex = index
+                    )
                 }
                 composable(
                     "settings"
                 ) {
-                    toolbarTitle = stringResource(id = R.string.settings)
-                    isSearchFieldVisible = false
-                    isSearchVisible = false
+                    vm.toolbarTitle = stringResource(id = R.string.settings)
+                    vm.isSearchFieldVisible = false
+                    vm.isSearchVisible = false
                     SettingsScreen()
                 }
                 composable(
@@ -184,10 +178,10 @@ fun MainContent() {
                     })
                 ) {
                     val articleTitle = it.arguments?.getString("article-title") ?: ""
-                    toolbarTitle = stringResource(id = R.string.article)
-                    isSearchFieldVisible = false
-                    isSearchVisible = false
-                    ArticleDetails(articleTitle)
+                    vm.toolbarTitle = stringResource(id = R.string.article)
+                    vm.isSearchFieldVisible = false
+                    vm.isSearchVisible = false
+                    ArticleDetailsScreen(articleTitle = articleTitle)
                 }
             }
         }
