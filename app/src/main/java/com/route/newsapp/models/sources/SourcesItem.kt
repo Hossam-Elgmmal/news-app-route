@@ -1,8 +1,14 @@
 package com.route.newsapp.models.sources
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class SourcesItem(
+
+    @PrimaryKey(autoGenerate = true)
+    var sourcePrimaryKey: Int,
 
     @SerializedName("id")
     var id: String? = null,

@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.route.newsapp.R
@@ -35,7 +35,7 @@ import com.route.newsapp.ui.theme.Green
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun CategoryContentScreen(
-    vm: CategoryContentViewModel = viewModel(),
+    vm: CategoryContentViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
     categoryIndex: Int = 0,
     onNavigationIconClick: () -> Unit = {}

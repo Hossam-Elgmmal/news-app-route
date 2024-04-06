@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.newsapp.R
@@ -34,7 +34,7 @@ import com.route.newsapp.ui.theme.Gray
 
 
 @Composable
-fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = viewModel(), articleTitle: String) {
+fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = hiltViewModel(), articleTitle: String) {
 
     LaunchedEffect(key1 = Unit) {
         vm.getArticle(articleTitle)
@@ -64,7 +64,7 @@ fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = viewModel(), articleTitle
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArticlesResponseDetails(
-    vm: ArticleDetailsViewModel = viewModel(),
+    vm: ArticleDetailsViewModel = hiltViewModel(),
     article: ArticlesItem = ArticlesItem()
 ) {
     val context = LocalContext.current
@@ -87,7 +87,7 @@ fun ArticlesResponseDetails(
 
         Row {//source name
             Text(
-                text = article.source?.name ?: "",
+                text = article.author ?: "",
                 modifier = Modifier.padding(8.dp),
                 style = TextStyle(fontSize = 10.sp, color = Color.Gray)
             )
@@ -123,7 +123,7 @@ fun ArticlesResponseDetails(
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(
-                text = article.source?.name ?: "",
+                text = article.author ?: "",
                 modifier = Modifier
                     .padding(8.dp),
                 style = TextStyle(Color.DarkGray, 13.sp)

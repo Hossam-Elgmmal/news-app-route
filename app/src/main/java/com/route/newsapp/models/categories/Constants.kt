@@ -1,5 +1,6 @@
 package com.route.newsapp.models.categories
 
+import com.route.newsapp.BuildConfig
 import com.route.newsapp.R
 import com.route.newsapp.ui.theme.Blue
 import com.route.newsapp.ui.theme.LightBlue
@@ -9,7 +10,7 @@ import com.route.newsapp.ui.theme.Yellow
 
 object Constants {
 
-    const val API_KEY = "e4c423ac8f614e7a8214620d38ccca29"
+    const val API_KEY = BuildConfig.API_KEY
     val CATEGORIES_NAMES =
         listOf("sports", "entertainment", "health", "business", "technology", "science")
 

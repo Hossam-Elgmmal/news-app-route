@@ -1,9 +1,14 @@
 package com.route.newsapp.models.articles
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.route.newsapp.models.sources.Source
 
+@Entity
 data class ArticlesItem(
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
 
     @field:SerializedName("publishedAt")
     val publishedAt: String? = null,
@@ -16,9 +21,6 @@ data class ArticlesItem(
 
     @field:SerializedName("description")
     val description: String? = null,
-
-    @field:SerializedName("source")
-    val source: Source? = null,
 
     @field:SerializedName("title")
     val title: String? = null,

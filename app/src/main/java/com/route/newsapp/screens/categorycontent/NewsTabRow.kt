@@ -12,12 +12,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.route.newsapp.ui.theme.Green
 
 @Composable
 fun NewsTabRow(
-    vm: CategoryContentViewModel = viewModel()
+    vm: CategoryContentViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(Unit) {

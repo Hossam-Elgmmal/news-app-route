@@ -2,6 +2,7 @@ package com.route.newsapp.activities
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -30,11 +31,14 @@ import com.route.newsapp.screens.categorycontent.CategoryContentScreen
 import com.route.newsapp.screens.settings.SettingsScreen
 import com.route.newsapp.ui.theme.NewsAppTheme
 import com.route.newsapp.utils.DrawerSheet
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             NewsAppTheme {
 

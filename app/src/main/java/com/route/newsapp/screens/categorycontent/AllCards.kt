@@ -63,7 +63,7 @@ fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
         )
         Row {//source name
             Text(
-                text = article.source?.name ?: "",
+                text = article.author ?: "",
                 modifier = Modifier.padding(8.dp),
                 style = TextStyle(fontSize = 10.sp, color = Color.Gray)
             )

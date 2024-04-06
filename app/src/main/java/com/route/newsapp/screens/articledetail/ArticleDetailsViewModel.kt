@@ -3,35 +3,39 @@ package com.route.newsapp.screens.articledetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.route.newsapp.api.ApiManager
+import androidx.lifecycle.viewModelScope
+import com.route.newsapp.api.NewsServices
 import com.route.newsapp.models.articles.ArticlesItem
-import com.route.newsapp.models.articles.ArticlesResponse
 import com.route.newsapp.models.categories.Constants
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ArticleDetailsViewModel : ViewModel() {
+private const val TAG = "ArticleDetailsViewModel"
+
+@HiltViewModel
+class ArticleDetailsViewModel @Inject constructor(
+    private val newsServices: NewsServices
+) : ViewModel() {
     val newsArticles = mutableStateListOf<ArticlesItem>()
 
     fun getArticle(articleTitle: String) {
-
-        ApiManager.getNewsServices().searchEverything(Constants.API_KEY, articleTitle)
-            .enqueue(object : Callback<ArticlesResponse> {
-                override fun onResponse(
-                    call: Call<ArticlesResponse>,
-                    response: Response<ArticlesResponse>
-                ) {
-                    val articles = response.body()?.articles
-                    articles?.let { newsArticles.addAll(it) }
+        viewModelScope.launch {
+            try {
+                val response = newsServices
+                    .searchEverything(Constants.API_KEY, articleTitle)
+                val articles = response.articles
+                if (articles?.isNotEmpty() == true) {
+                    newsArticles.clear()
+                    newsArticles.addAll(articles)
                 }
-
-                override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-
-                }
-            })
+            } catch (e: Exception) {
+                Log.e(TAG, "search: failed to search for $articleTitle", e)
+            }
+        }
     }
 
     fun openInBrowser(context: Context, url: String?) {

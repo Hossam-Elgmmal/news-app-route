@@ -3,23 +3,31 @@ package com.route.newsapp.screens.categorycontent
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.route.newsapp.api.ApiManager
+import androidx.lifecycle.viewModelScope
+import com.route.newsapp.api.NewsServices
+import com.route.newsapp.contarcts.SourcesRepository
 import com.route.newsapp.models.articles.ArticlesItem
-import com.route.newsapp.models.articles.ArticlesResponse
 import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.models.sources.SourcesItem
-import com.route.newsapp.models.sources.SourcesResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoryContentViewModel : ViewModel() {
+private const val TAG = "CategoryContentViewModel"
+
+@HiltViewModel
+class CategoryContentViewModel @Inject constructor(
+    private val sourcesRepository: SourcesRepository,
+    private val newsServices: NewsServices,
+) : ViewModel() {
 
 
     val newsArticles = mutableStateListOf<ArticlesItem>()
@@ -49,77 +57,53 @@ class CategoryContentViewModel : ViewModel() {
     }
 
     fun getSourcesNames() {
-        ApiManager
-            .getNewsServices()
-            .getNewsSources(Constants.API_KEY, Constants.CATEGORIES_NAMES[categoryIndex])
-            .enqueue(object : Callback<SourcesResponse> {
-                override fun onResponse(
-                    call: Call<SourcesResponse>,
-                    response: Response<SourcesResponse>
-                ) {
-                    val sources = response.body()?.sources
-                    if (sources?.isNotEmpty() == true) {
-                        sourcesNamesList.addAll(sources)
-                    }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response =
+                    sourcesRepository.getSources(Constants.CATEGORIES_NAMES[categoryIndex])
 
+                if (response.isNotEmpty()) {
+                    sourcesNamesList.addAll(response)
                 }
-
-                override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
-
-                }
-
-            })
+            } catch (e: Exception) {
+                Log.e(TAG, "getSourcesNames: failed to get sources name", e)
+            }
+        }
     }
 
     fun getNewsBySource(sourceIndex: Int = 0) {
         loading = true
-        ApiManager
-            .getNewsServices()
-            .getNewsBySource(Constants.API_KEY, sourcesNamesList[sourceIndex].id ?: "")
-            .enqueue(object : Callback<ArticlesResponse> {
-                override fun onResponse(
-                    call: Call<ArticlesResponse>,
-                    response: Response<ArticlesResponse>
-                ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = newsServices
+                    .getNewsBySource(Constants.API_KEY, sourcesNamesList[sourceIndex].id ?: "")
+                val articles = response.articles
+                if (articles?.isNotEmpty() == true) {
                     newsArticles.clear()
-                    val articles = response.body()?.articles
-
-                    if (articles?.isNotEmpty() == true) {
-                        newsArticles.addAll(articles)
-                    }
-                    loading = false
+                    newsArticles.addAll(articles)
                 }
-
-                override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-                    loading = false
-
-                }
-            })
+            } catch (e: Exception) {
+                Log.e(TAG, "getNewsBySource: failed to get articles", e)
+            }
+            loading = false
+        }
     }
 
     fun search() {
         loading = true
-        ApiManager
-            .getNewsServices()
-            .searchEverything(Constants.API_KEY, myText)
-            .enqueue(object : Callback<ArticlesResponse> {
-                override fun onResponse(
-                    call: Call<ArticlesResponse>,
-                    response: Response<ArticlesResponse>
-                ) {
+        viewModelScope.launch {
+            try {
+                val response = newsServices
+                    .searchEverything(Constants.API_KEY, myText)
+                val articles = response.articles
+                if (articles?.isNotEmpty() == true) {
                     newsArticles.clear()
-                    val articles = response.body()?.articles
-                    if (articles?.isNotEmpty() == true) {
-                        newsArticles.addAll(articles)
-                    }
-                    loading = false
-
+                    newsArticles.addAll(articles)
                 }
-
-                override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-                    loading = false
-                }
-            })
+            } catch (e: Exception) {
+                Log.e(TAG, "search: failed to search for $myText", e)
+            }
+            loading = false
+        }
     }
-
 }
