@@ -8,6 +8,6 @@ data class SourcesResponse(
     var status: String? = null,
 
     @SerializedName("sources")
-    var sources: List<SourcesItem> = listOf()
+    var sources: List<SourceItem> = listOf()
 )
 

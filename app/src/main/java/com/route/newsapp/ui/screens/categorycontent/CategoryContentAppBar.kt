@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.settings
+package com.route.newsapp.ui.screens.categorycontent
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -15,14 +15,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.route.newsapp.R
+import com.route.newsapp.models.categories.Constants
 import com.route.newsapp.ui.theme.Green
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsAppBar(onNavigationIconClick: () -> Unit) {
+fun CategoryContentAppBar(
+    index: Int,
+    onNavigationIconClick: () -> Unit,
+    onSearchClick: () -> Unit
+) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.settings), color = Color.White)
+            Text(
+                text = stringResource(Constants.categoriesList[index].titleId),
+                color = Color.White
+            )
         },
         colors = TopAppBarDefaults.topAppBarColors(Green),
         navigationIcon = {
@@ -30,6 +38,14 @@ fun SettingsAppBar(onNavigationIconClick: () -> Unit) {
                 Icon(
                     painterResource(id = R.drawable.ic_menu),
                     "menu", tint = Color.White
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = onSearchClick) {
+                Icon(
+                    painterResource(id = R.drawable.ic_search),
+                    "search", tint = Color.White
                 )
             }
         },

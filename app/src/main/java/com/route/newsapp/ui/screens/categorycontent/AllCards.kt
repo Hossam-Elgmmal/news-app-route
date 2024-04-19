@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.categorycontent
+package com.route.newsapp.ui.screens.categorycontent
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -50,7 +50,7 @@ fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(4.dp)
     ) {
         GlideImage(
             model = article.urlToImage ?: "",
@@ -59,7 +59,7 @@ fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
             modifier = Modifier
                 .fillMaxSize()
                 .aspectRatio(2f)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(4.dp))
         )
         Row {//source name
             Text(

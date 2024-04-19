@@ -5,13 +5,11 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class SourcesItem(
+data class SourceItem(
 
-    @PrimaryKey(autoGenerate = true)
-    var sourcePrimaryKey: Int,
-
+    @PrimaryKey
     @SerializedName("id")
-    var id: String? = null,
+    var id: String = "",
 
     @SerializedName("name")
     var name: String? = null,
@@ -24,11 +22,5 @@ data class SourcesItem(
 
     @SerializedName("category")
     var category: String? = null,
-
-    @SerializedName("language")
-    var language: String? = null,
-
-    @SerializedName("country")
-    var country: String? = null
 
 )

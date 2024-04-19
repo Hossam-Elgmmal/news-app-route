@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.route.newsapp.models.articles.ArticlesItem
-import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourceItem
 
-@Database(entities = [ArticlesItem::class, SourcesItem::class], version = 1)
+@Database(entities = [ArticlesItem::class, SourceItem::class], version = 1)
 abstract class NewsDatabase : RoomDatabase() {
     abstract fun getDao(): SourcesDao
 

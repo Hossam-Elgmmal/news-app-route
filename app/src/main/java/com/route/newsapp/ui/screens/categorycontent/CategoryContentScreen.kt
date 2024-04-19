@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.categorycontent
+package com.route.newsapp.ui.screens.categorycontent
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

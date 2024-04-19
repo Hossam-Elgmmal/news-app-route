@@ -1,12 +1,12 @@
 package com.route.newsapp.di
 
-import com.route.newsapp.api.NewsServices
+import com.route.newsapp.api.NewsApi
 import com.route.newsapp.contarcts.NetworkHandler
-import com.route.newsapp.contarcts.SourcesOfflineDataSource
-import com.route.newsapp.contarcts.SourcesOnlineDataSource
+import com.route.newsapp.contarcts.OfflineSources
+import com.route.newsapp.contarcts.OnlineSources
 import com.route.newsapp.database.NewsDatabase
-import com.route.newsapp.datasources.offline.SourcesOfflineDataSourceImpl
-import com.route.newsapp.datasources.online.SourcesOnlineDataSourceImpl
+import com.route.newsapp.datasources.offline.OfflineSourcesImpl
+import com.route.newsapp.datasources.online.OnlineSourcesImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,16 +19,16 @@ object DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideOfflineDataSource(database: NewsDatabase): SourcesOfflineDataSource {
-        return SourcesOfflineDataSourceImpl(database.getDao())
+    fun provideOfflineDataSource(database: NewsDatabase): OfflineSources {
+        return OfflineSourcesImpl(database.getDao())
     }
 
     @Singleton
     @Provides
     fun provideOnlineDataSource(
-        newsServices: NewsServices
-    ): SourcesOnlineDataSource {
-        return SourcesOnlineDataSourceImpl(newsServices)
+        newsApi: NewsApi
+    ): OnlineSources {
+        return OnlineSourcesImpl(newsApi)
     }
 
     @Provides

@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.allcategories
+package com.route.newsapp.ui.screens.allcategories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -64,13 +64,13 @@ fun AllCategoriesScreen(
             )
 
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(150.dp),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                modifier = Modifier.padding(24.dp)
+                columns = GridCells.Adaptive(145.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.padding(16.dp)
             ) {
-                items(Constants.ALL_CATEGORIES.size) { position ->
-                    CategoryItem(Constants.ALL_CATEGORIES[position], position) {
+                items(Constants.categoriesList.size) { position ->
+                    CategoryItem(Constants.categoriesList[position], position) {
 
                         navController.navigate("News/$position")
 

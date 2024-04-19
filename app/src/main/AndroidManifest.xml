@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name=".application.NewsApplication"
+        android:name=".NewsApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,21 +25,18 @@
                 android:value="true" />
         </service>
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.NewsApp">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:exported="false"
-            android:theme="@style/Theme.NewsApp" />
+            android:exported="false" />
     </application>
 
 </manifest>

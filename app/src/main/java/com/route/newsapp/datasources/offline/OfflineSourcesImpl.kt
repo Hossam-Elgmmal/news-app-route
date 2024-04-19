@@ -1,16 +1,16 @@
 package com.route.newsapp.datasources.offline
 
 import android.util.Log
-import com.route.newsapp.contarcts.SourcesOfflineDataSource
+import com.route.newsapp.contarcts.OfflineSources
 import com.route.newsapp.database.SourcesDao
-import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourceItem
 
 private const val TAG = "SourcesOfflineDataSourceImpl"
 
-class SourcesOfflineDataSourceImpl(
+class OfflineSourcesImpl(
     private val dao: SourcesDao
-) : SourcesOfflineDataSource {
-    override suspend fun saveSources(sourcesList: List<SourcesItem>) {
+) : OfflineSources {
+    override suspend fun saveSources(sourcesList: List<SourceItem>) {
         try {
             dao.saveSources(sourcesList)
         } catch (e: Exception) {
@@ -18,7 +18,7 @@ class SourcesOfflineDataSourceImpl(
         }
     }
 
-    override suspend fun getSources(categoryId: String): List<SourcesItem> {
+    override suspend fun getSources(categoryId: String): List<SourceItem> {
         return try {
             dao.getSources(categoryId)
         } catch (e: Exception) {

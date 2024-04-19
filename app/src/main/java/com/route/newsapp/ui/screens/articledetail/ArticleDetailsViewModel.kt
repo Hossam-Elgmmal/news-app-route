@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.articledetail
+package com.route.newsapp.ui.screens.articledetail
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.route.newsapp.api.NewsServices
+import com.route.newsapp.api.NewsApi
 import com.route.newsapp.models.articles.ArticlesItem
 import com.route.newsapp.models.categories.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,14 +18,14 @@ private const val TAG = "ArticleDetailsViewModel"
 
 @HiltViewModel
 class ArticleDetailsViewModel @Inject constructor(
-    private val newsServices: NewsServices
+    private val newsApi: NewsApi
 ) : ViewModel() {
     val newsArticles = mutableStateListOf<ArticlesItem>()
 
     fun getArticle(articleTitle: String) {
         viewModelScope.launch {
             try {
-                val response = newsServices
+                val response = newsApi
                     .searchEverything(Constants.API_KEY, articleTitle)
                 val articles = response.articles
                 if (articles?.isNotEmpty() == true) {

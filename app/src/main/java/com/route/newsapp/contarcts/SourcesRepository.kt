@@ -1,17 +1,17 @@
 package com.route.newsapp.contarcts
 
-import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourceItem
 
 interface SourcesRepository {
-    suspend fun getSources(categoryId: String): List<SourcesItem>
+    suspend fun getSources(categoryId: String): List<SourceItem>
 }
 
-interface SourcesOnlineDataSource {
-    suspend fun fetchSources(categoryId: String): List<SourcesItem>
+interface OnlineSources {
+    suspend fun fetchSources(categoryId: String): List<SourceItem>
 }
 
-interface SourcesOfflineDataSource {
-    suspend fun saveSources(sourcesList: List<SourcesItem>)
+interface OfflineSources {
+    suspend fun saveSources(sourcesList: List<SourceItem>)
 
-    suspend fun getSources(categoryId: String): List<SourcesItem>
+    suspend fun getSources(categoryId: String): List<SourceItem>
 }

@@ -1,9 +1,9 @@
-package com.route.newsapp.activities
+package com.route.newsapp
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,18 +24,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.route.newsapp.R
-import com.route.newsapp.screens.allcategories.AllCategoriesScreen
-import com.route.newsapp.screens.articledetail.ArticleDetailsScreen
-import com.route.newsapp.screens.categorycontent.CategoryContentScreen
-import com.route.newsapp.screens.settings.SettingsScreen
+import com.route.newsapp.ui.DrawerSheet
+import com.route.newsapp.ui.screens.allcategories.AllCategoriesScreen
+import com.route.newsapp.ui.screens.articledetail.ArticleDetailsScreen
+import com.route.newsapp.ui.screens.categorycontent.CategoryContentScreen
+import com.route.newsapp.ui.screens.settings.SettingsScreen
 import com.route.newsapp.ui.theme.NewsAppTheme
-import com.route.newsapp.utils.DrawerSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,6 +46,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+}
+
+object Destination {
+    const val CATEGORIES = "categories"
+    const val NEWS = "news"
+    const val SETTINGS = "settings"
+    const val ARTICLE_DETAILS = "article-details"
+}
+
+object Arg {
+    const val CATEGORY_INDEX = "category_index"
+    const val ARTICLE_TITLE = "article_title"
 }
 
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_8_pro")
@@ -63,9 +74,9 @@ fun MainContent() {
             DrawerSheet(
                 onCategoriesClick = {
 
-                    if (navController.currentDestination?.route != "categories") {
-                        navController.navigate("categories") {
-                            popUpTo("categories") {
+                    if (navController.currentDestination?.route != Destination.CATEGORIES) {
+                        navController.navigate(Destination.CATEGORIES) {
+                            popUpTo(Destination.CATEGORIES) {
                                 inclusive = true
                             }
                         }
@@ -75,9 +86,9 @@ fun MainContent() {
                     }
                 },
                 onSettingsClick = {
-                    if (navController.currentDestination?.route != "settings") {
-                        navController.navigate("settings") {
-                            popUpTo("categories")
+                    if (navController.currentDestination?.route != Destination.SETTINGS) {
+                        navController.navigate(Destination.SETTINGS) {
+                            popUpTo(Destination.CATEGORIES)
                         }
                     }
                     scope.launch {
@@ -88,7 +99,7 @@ fun MainContent() {
         }
     ) {
         NavHost(
-            navController = navController, startDestination = "categories",
+            navController = navController, startDestination = Destination.CATEGORIES,
             modifier = Modifier
                 .paint(
                     painterResource(id = R.drawable.image_pattern),
@@ -108,7 +119,7 @@ fun MainContent() {
             }
         ) {
             composable(
-                "categories"
+                route = Destination.CATEGORIES
             ) {
                 AllCategoriesScreen(navController) {
                     scope.launch {
@@ -117,12 +128,12 @@ fun MainContent() {
                 }
             }
             composable(
-                "News/{category_index}",
-                arguments = listOf(navArgument("category_index") {
+                route = "${Destination.NEWS}/{${Arg.CATEGORY_INDEX}}",
+                arguments = listOf(navArgument(Arg.CATEGORY_INDEX) {
                     type = NavType.IntType
                 })
             ) { navBackStackEntry ->
-                val index = navBackStackEntry.arguments?.getInt("category_index") ?: 0
+                val index = navBackStackEntry.arguments?.getInt(Arg.CATEGORY_INDEX) ?: 0
                 CategoryContentScreen(
                     navController = navController,
                     categoryIndex = index
@@ -133,7 +144,7 @@ fun MainContent() {
                 }
             }
             composable(
-                "settings"
+                route = Destination.SETTINGS
             ) {
                 SettingsScreen {
                     scope.launch {
@@ -142,12 +153,12 @@ fun MainContent() {
                 }
             }
             composable(
-                "article-details/{article-title}",
-                arguments = listOf(navArgument("article-title") {
+                route = "${Destination.ARTICLE_DETAILS}/{${Arg.ARTICLE_TITLE}}",
+                arguments = listOf(navArgument(Arg.ARTICLE_TITLE) {
                     type = NavType.StringType
                 })
             ) {
-                val articleTitle = it.arguments?.getString("article-title") ?: ""
+                val articleTitle = it.arguments?.getString(Arg.ARTICLE_TITLE) ?: ""
                 ArticleDetailsScreen(articleTitle = articleTitle)
 
             }

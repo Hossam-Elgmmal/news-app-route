@@ -1,19 +1,19 @@
 package com.route.newsapp.datasources.online
 
 import android.util.Log
-import com.route.newsapp.api.NewsServices
-import com.route.newsapp.contarcts.SourcesOnlineDataSource
+import com.route.newsapp.api.NewsApi
+import com.route.newsapp.contarcts.OnlineSources
 import com.route.newsapp.models.categories.Constants
-import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourceItem
 
 private const val TAG = "SourcesOnlineDataSourceImpl"
 
-class SourcesOnlineDataSourceImpl(
-    private val newsServices: NewsServices
-) : SourcesOnlineDataSource {
-    override suspend fun fetchSources(categoryId: String): List<SourcesItem> {
+class OnlineSourcesImpl(
+    private val newsApi: NewsApi
+) : OnlineSources {
+    override suspend fun fetchSources(categoryId: String): List<SourceItem> {
         return try {
-            newsServices
+            newsApi
                 .getNewsSources(Constants.API_KEY, categoryId)
                 .sources
 

@@ -1,4 +1,4 @@
-package com.route.newsapp.application
+package com.route.newsapp
 
 import android.app.Application
 import com.route.newsapp.database.NewsDatabase

@@ -5,7 +5,7 @@ import com.route.newsapp.models.sources.SourcesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NewsServices {
+interface NewsApi {
 
     @GET("top-headlines/sources")
     suspend fun getNewsSources(

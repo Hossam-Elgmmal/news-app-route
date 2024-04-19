@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.categorycontent
+package com.route.newsapp.ui.screens.categorycontent
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager

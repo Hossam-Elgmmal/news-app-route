@@ -1,6 +1,6 @@
 package com.route.newsapp.di
 
-import com.route.newsapp.api.NewsServices
+import com.route.newsapp.api.NewsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object NetworkModule {
+object ApiModule {
 
     @Provides
     fun providesOkHttpClient(): OkHttpClient {
@@ -40,7 +40,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesNewsServices(retrofit: Retrofit): NewsServices {
-        return retrofit.create(NewsServices::class.java)
+    fun providesNewsApi(retrofit: Retrofit): NewsApi {
+        return retrofit.create(NewsApi::class.java)
     }
 }

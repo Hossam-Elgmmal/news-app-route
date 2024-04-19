@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.settings
+package com.route.newsapp.ui.screens.settings
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background

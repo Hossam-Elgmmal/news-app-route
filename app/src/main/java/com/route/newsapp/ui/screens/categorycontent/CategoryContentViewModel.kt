@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.categorycontent
+package com.route.newsapp.ui.screens.categorycontent
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -11,11 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.route.newsapp.api.NewsServices
+import com.route.newsapp.api.NewsApi
 import com.route.newsapp.contarcts.SourcesRepository
 import com.route.newsapp.models.articles.ArticlesItem
 import com.route.newsapp.models.categories.Constants
-import com.route.newsapp.models.sources.SourcesItem
+import com.route.newsapp.models.sources.SourceItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ private const val TAG = "CategoryContentViewModel"
 @HiltViewModel
 class CategoryContentViewModel @Inject constructor(
     private val sourcesRepository: SourcesRepository,
-    private val newsServices: NewsServices,
+    private val newsApi: NewsApi,
 ) : ViewModel() {
 
 
@@ -37,7 +37,7 @@ class CategoryContentViewModel @Inject constructor(
 
     var selectedIndex by mutableIntStateOf(0)
 
-    val sourcesNamesList = mutableStateListOf<SourcesItem>()
+    val sourcesNamesList = mutableStateListOf<SourceItem>()
 
     var categoryIndex by mutableIntStateOf(0)
 
@@ -60,7 +60,7 @@ class CategoryContentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response =
-                    sourcesRepository.getSources(Constants.CATEGORIES_NAMES[categoryIndex])
+                    sourcesRepository.getSources(Constants.categories[categoryIndex])
 
                 if (response.isNotEmpty()) {
                     sourcesNamesList.addAll(response)
@@ -75,8 +75,8 @@ class CategoryContentViewModel @Inject constructor(
         loading = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = newsServices
-                    .getNewsBySource(Constants.API_KEY, sourcesNamesList[sourceIndex].id ?: "")
+                val response = newsApi
+                    .getNewsBySource(Constants.API_KEY, sourcesNamesList[sourceIndex].id)
                 val articles = response.articles
                 if (articles?.isNotEmpty() == true) {
                     newsArticles.clear()
@@ -93,7 +93,7 @@ class CategoryContentViewModel @Inject constructor(
         loading = true
         viewModelScope.launch {
             try {
-                val response = newsServices
+                val response = newsApi
                     .searchEverything(Constants.API_KEY, myText)
                 val articles = response.articles
                 if (articles?.isNotEmpty() == true) {

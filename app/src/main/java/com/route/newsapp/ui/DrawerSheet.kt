@@ -1,8 +1,12 @@
-package com.route.newsapp.utils
+package com.route.newsapp.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
@@ -27,7 +31,8 @@ import com.route.newsapp.ui.theme.Green
 fun DrawerSheet(onCategoriesClick: () -> Unit = {}, onSettingsClick: () -> Unit = {}) {
     ModalDrawerSheet(
         modifier = Modifier
-            .fillMaxWidth(0.65f)
+            .windowInsetsPadding(WindowInsets.systemBars)
+            .fillMaxWidth(0.65f),
     ) {
         Text(
             text = stringResource(R.string.drawer_news_app),
@@ -40,6 +45,7 @@ fun DrawerSheet(onCategoriesClick: () -> Unit = {}, onSettingsClick: () -> Unit 
             modifier = Modifier
                 .background(Green)
                 .padding(0.dp, 24.dp)
+                .windowInsetsPadding(WindowInsets.statusBars)
                 .fillMaxWidth()
         )
         CustomDrawerItem(R.drawable.ic_categories, R.string.categories, onCategoriesClick)

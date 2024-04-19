@@ -1,4 +1,4 @@
-package com.route.newsapp.screens.articledetail
+package com.route.newsapp.ui.screens.articledetail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
