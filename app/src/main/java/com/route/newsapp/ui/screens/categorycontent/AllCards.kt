@@ -1,15 +1,19 @@
 package com.route.newsapp.ui.screens.categorycontent
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,28 +24,49 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.route.data.articles.ArticleItem
 import com.route.newsapp.R
-import com.route.newsapp.models.articles.ArticlesItem
 
 @Composable
-fun AllCards(articles: List<ArticlesItem>, onCardClick: (String) -> Unit) {
+fun AllCards(
+    isInternetAvailable: Boolean,
+    articles: List<ArticleItem>,
+    onCardClick: (String) -> Unit
+) {
 
-    LazyColumn {
-        items(articles.size) { position ->
-            NewsCard(articles[position]) {
-                articles[position].title?.let { onCardClick(it) }
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        LazyColumn {
+            items(articles.size) { position ->
+                NewsCard(articles[position]) {
+                    onCardClick(articles[position].title)
+                }
             }
+        }
+        if (!isInternetAvailable) {
+            Text(
+                text = "no connection",
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .background(Color.Black)
+            )
         }
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
+fun NewsCard(article: ArticleItem, onCardClick: () -> Unit = {}) {
 
     Card(
         modifier = Modifier
@@ -75,7 +100,7 @@ fun NewsCard(article: ArticlesItem, onCardClick: () -> Unit = {}) {
             )
         }
         Text(
-            text = article.title ?: "",
+            text = article.title,
             modifier = Modifier.padding(8.dp),
             style = TextStyle(fontSize = 18.sp)
         )

@@ -1,9 +1,8 @@
 package com.route.newsapp
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -34,15 +33,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() { // AppCompat is needed for in-app language changing
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             NewsAppTheme {
-
                 MainContent()
-
             }
         }
     }
@@ -52,7 +48,7 @@ object Destination {
     const val CATEGORIES = "categories"
     const val NEWS = "news"
     const val SETTINGS = "settings"
-    const val ARTICLE_DETAILS = "article-details"
+    const val ARTICLE_DETAILS = "article_details"
 }
 
 object Arg {

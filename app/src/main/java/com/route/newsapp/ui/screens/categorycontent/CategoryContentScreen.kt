@@ -8,28 +8,20 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.route.newsapp.R
+import com.route.newsapp.Destination
 import com.route.newsapp.ui.theme.Green
 
 @Preview(showSystemUi = true, showBackground = true)
@@ -41,11 +33,10 @@ fun CategoryContentScreen(
     onNavigationIconClick: () -> Unit = {}
 ) {
 
-    val context = LocalContext.current
     vm.categoryIndex = categoryIndex
 
     LaunchedEffect(key1 = Unit) {
-        vm.checkConnection(context)
+        vm.checkConnection()
     }
 
     Scaffold(
@@ -76,9 +67,7 @@ fun CategoryContentScreen(
 
             NewsTabRow(vm)
 
-            if (vm.internetAvailable && vm.loading) Load()
-
-            if (!vm.internetAvailable) NoWifi()
+            if (vm.isInternetAvailable && vm.isLoading) Loading()
 
             if (vm.myText != vm.searchText.trim()) {
 
@@ -86,8 +75,8 @@ fun CategoryContentScreen(
                 vm.search()
             }
 
-            AllCards(vm.newsArticles) { articleTitle ->
-                navController.navigate("article-details/$articleTitle")
+            AllCards(vm.isInternetAvailable, vm.newsArticles) { articleTitle ->
+                navController.navigate("${Destination.ARTICLE_DETAILS}/$articleTitle")
             }
         }
     }
@@ -95,7 +84,7 @@ fun CategoryContentScreen(
 
 //@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun Load() {
+fun Loading() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -105,24 +94,5 @@ fun Load() {
             trackColor = Color.LightGray
         )
 
-    }
-}
-
-//@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun NoWifi() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        TextButton(
-            onClick = {},
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_no_wifi),
-                contentDescription = stringResource(R.string.no_internet),
-                tint = Green
-            )
-            Spacer(modifier = Modifier.padding(4.dp))
-            Text(text = stringResource(R.string.no_internet), color = Green)
-        }
     }
 }

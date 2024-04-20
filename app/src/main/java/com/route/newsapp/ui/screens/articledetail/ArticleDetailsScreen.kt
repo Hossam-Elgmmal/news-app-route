@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.route.data.articles.ArticleItem
 import com.route.newsapp.R
-import com.route.newsapp.models.articles.ArticlesItem
 import com.route.newsapp.ui.theme.Gray
 
 
@@ -50,8 +50,8 @@ fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = hiltViewModel(), articleT
             modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
         ) {
             item {
-                if (vm.newsArticles.size > 0) {
-                    ArticlesResponseDetails(vm, vm.newsArticles[0])
+                if (vm.newsArticle.title == articleTitle) {
+                    ArticlesResponseDetails(vm, vm.newsArticle)
                 }
             }
         }
@@ -65,7 +65,7 @@ fun ArticleDetailsScreen(vm: ArticleDetailsViewModel = hiltViewModel(), articleT
 @Composable
 fun ArticlesResponseDetails(
     vm: ArticleDetailsViewModel = hiltViewModel(),
-    article: ArticlesItem = ArticlesItem()
+    article: ArticleItem = ArticleItem()
 ) {
     val context = LocalContext.current
 
@@ -99,7 +99,7 @@ fun ArticlesResponseDetails(
             )
         }
         Text(
-            text = article.title ?: "",
+            text = article.title,
             modifier = Modifier.padding(16.dp),
             style = TextStyle(Color.DarkGray, 18.sp)
         )

@@ -3,8 +3,11 @@ package com.route.newsapp.ui.screens.categorycontent
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -55,6 +58,7 @@ fun SearchBox(onSearch: (String) -> Unit = {}, onCloseClick: () -> Unit = {}) {
     }
     Box(
         modifier = Modifier
+            .windowInsetsPadding(WindowInsets.statusBars)
             .fillMaxWidth()
             .padding(8.dp, 4.dp)
     ) {

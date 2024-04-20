@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.route.newsapp.Destination
 import com.route.newsapp.R
 import com.route.newsapp.models.categories.CategoryItem
 import com.route.newsapp.models.categories.Constants
@@ -55,7 +56,7 @@ fun AllCategoriesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = paddingValues.calculateTopPadding())
-                .padding(24.dp)
+                .padding(top = 20.dp, start = 20.dp, end = 20.dp)
         ) {
 
             Text(
@@ -72,7 +73,7 @@ fun AllCategoriesScreen(
                 items(Constants.categoriesList.size) { position ->
                     CategoryItem(Constants.categoriesList[position], position) {
 
-                        navController.navigate("News/$position")
+                        navController.navigate("${Destination.NEWS}/$position")
 
                     }
                 }

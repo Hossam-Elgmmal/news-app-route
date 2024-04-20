@@ -1,7 +1,7 @@
 package com.route.newsapp
 
 import android.app.Application
-import com.route.newsapp.database.NewsDatabase
+import com.route.data.database.NewsDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

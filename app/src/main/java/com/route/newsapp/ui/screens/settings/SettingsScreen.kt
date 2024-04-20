@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +43,7 @@ fun SettingsScreen(onNavigationIconClick: () -> Unit = {}) {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    val langCode by remember {
+    val langCode by rememberSaveable {
         mutableStateOf(
             context.getString(
                 R.string.lang_code
@@ -52,7 +53,7 @@ fun SettingsScreen(onNavigationIconClick: () -> Unit = {}) {
     Scaffold(
         topBar = {
             SettingsAppBar {
-
+                onNavigationIconClick()
             }
         },
         containerColor = Color.Transparent
