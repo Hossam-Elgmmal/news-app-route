@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.route.data.articles.ArticleItem
 import com.route.data.sources.SourceItem
 import com.route.domain.repository.ArticlesUseCase
-import com.route.domain.repository.NetworkHandler
 import com.route.domain.repository.SourcesUseCase
 import com.route.newsapp.models.categories.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,14 +24,11 @@ private const val TAG = "CategoryContentViewModel"
 class CategoryContentViewModel @Inject constructor(
     private val sourcesUseCase: SourcesUseCase,
     private val articlesUseCase: ArticlesUseCase,
-    private val networkHandler: NetworkHandler,
 ) : ViewModel() {
 
 
     val newsArticles = mutableStateListOf<ArticleItem>()
     var isLoading by mutableStateOf(false)
-
-    var isInternetAvailable by mutableStateOf(false)
 
     var selectedIndex by mutableIntStateOf(0)
 
@@ -46,10 +42,9 @@ class CategoryContentViewModel @Inject constructor(
     var searchText by mutableStateOf("")
 
     var page by mutableIntStateOf(1)
-    private var sourceIndex by mutableIntStateOf(0)
+    var sourceIndex by mutableIntStateOf(0)
 
     fun getNextPage() {
-        checkConnection()
         isLoading = true
         page += 1
         viewModelScope.launch(Dispatchers.IO) {
@@ -81,12 +76,8 @@ class CategoryContentViewModel @Inject constructor(
         }
     }
 
-    fun checkConnection() {
-        isInternetAvailable = networkHandler.isOnline()
-    }
 
     fun getSourcesNames() {
-        checkConnection()
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response =
@@ -104,7 +95,7 @@ class CategoryContentViewModel @Inject constructor(
     }
 
     fun getNewsBySource(sourceIndex: Int = 0) {
-        checkConnection()
+        page = 1
         isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -133,7 +124,6 @@ class CategoryContentViewModel @Inject constructor(
     }
 
     fun search() {
-        checkConnection()
         isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
             try {

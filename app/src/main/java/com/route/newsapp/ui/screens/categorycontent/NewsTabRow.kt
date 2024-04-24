@@ -44,6 +44,7 @@ fun NewsTabRow(
                 onClick = {
                     vm.getNewsBySource(index)
                     vm.selectedIndex = index
+                    vm.sourceIndex = index
                 },
                 selectedContentColor = Color.White,
                 unselectedContentColor = Green,
