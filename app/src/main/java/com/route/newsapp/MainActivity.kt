@@ -1,5 +1,10 @@
 package com.route.newsapp
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +17,10 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
@@ -23,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.route.data.NetworkHandlerImpl
 import com.route.newsapp.ui.DrawerSheet
 import com.route.newsapp.ui.screens.allcategories.AllCategoriesScreen
 import com.route.newsapp.ui.screens.articledetail.ArticleDetailsScreen
@@ -34,13 +43,38 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() { // AppCompat is needed for in-app language changing
+
+    var isInternetAvailable by mutableStateOf(false)
+
+    val networkHandler = NetworkHandlerImpl(this)
+
+    private val myReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                isInternetAvailable = networkHandler.isOnline()
+            }
+
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NewsAppTheme {
-                MainContent()
+                MainContent(isInternetAvailable)
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        @Suppress("DEPRECATION")
+        registerReceiver(myReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(myReceiver)
     }
 }
 
@@ -58,7 +92,7 @@ object Arg {
 
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_8_pro")
 @Composable
-fun MainContent() {
+fun MainContent(isInternetAvailable: Boolean = false) {
 
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -132,6 +166,7 @@ fun MainContent() {
                 val index = navBackStackEntry.arguments?.getInt(Arg.CATEGORY_INDEX) ?: 0
                 CategoryContentScreen(
                     navController = navController,
+                    isInternetAvailable = isInternetAvailable,
                     categoryIndex = index
                 ) {
                     scope.launch {

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,15 +28,12 @@ import com.route.newsapp.ui.theme.Green
 fun CategoryContentScreen(
     vm: CategoryContentViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
+    isInternetAvailable: Boolean = false,
     categoryIndex: Int = 0,
     onNavigationIconClick: () -> Unit = {}
 ) {
 
     vm.categoryIndex = categoryIndex
-
-    LaunchedEffect(key1 = Unit) {
-        vm.checkConnection()
-    }
 
     Scaffold(
         topBar = {
@@ -76,13 +72,13 @@ fun CategoryContentScreen(
             Box {
 
                 AllCards(
-                    vm.isInternetAvailable,
+                    isInternetAvailable,
                     vm.newsArticles,
                     vm.page,
                     { vm.getNextPage() }) { articleTitle ->
                 navController.navigate("${Destination.ARTICLE_DETAILS}/$articleTitle")
             }
-                if (vm.isInternetAvailable && vm.isLoading) Loading(
+                if (isInternetAvailable && vm.isLoading) Loading(
                     modifier = Modifier.align(
                         Alignment.BottomCenter
                     )
