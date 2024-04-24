@@ -21,6 +21,10 @@ class ArticlesRepositoryImpl @Inject constructor(
         return offlineArticles.getArticles(sourcesId)
     }
 
+    override suspend fun getNextPage(sourcesId: String, page: Int): List<ArticlesItemDto> {
+        return onlineArticles.getNextPage(sourcesId, page)
+    }
+
     override suspend fun search(searchText: String): List<ArticlesItemDto> {
         if (networkHandler.isOnline()) {
             val articles = onlineArticles.search(searchText)

@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +37,8 @@ import com.route.newsapp.R
 fun AllCards(
     isInternetAvailable: Boolean,
     articles: List<ArticleItem>,
+    page: Int,
+    getNextPage: () -> Unit,
     onCardClick: (String) -> Unit
 ) {
 
@@ -46,6 +49,11 @@ fun AllCards(
             items(articles.size) { position ->
                 NewsCard(articles[position]) {
                     onCardClick(articles[position].title)
+                }
+                if (position + 1 >= page * 10) {
+                    LaunchedEffect(key1 = Unit) {
+                        getNextPage()
+                    }
                 }
             }
         }

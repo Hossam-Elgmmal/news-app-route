@@ -67,16 +67,26 @@ fun CategoryContentScreen(
 
             NewsTabRow(vm)
 
-            if (vm.isInternetAvailable && vm.isLoading) Loading()
-
             if (vm.myText != vm.searchText.trim()) {
 
                 vm.myText = vm.searchText
                 vm.search()
             }
 
-            AllCards(vm.isInternetAvailable, vm.newsArticles) { articleTitle ->
+            Box {
+
+                AllCards(
+                    vm.isInternetAvailable,
+                    vm.newsArticles,
+                    vm.page,
+                    { vm.getNextPage() }) { articleTitle ->
                 navController.navigate("${Destination.ARTICLE_DETAILS}/$articleTitle")
+            }
+                if (vm.isInternetAvailable && vm.isLoading) Loading(
+                    modifier = Modifier.align(
+                        Alignment.BottomCenter
+                    )
+                )
             }
         }
     }
@@ -84,9 +94,9 @@ fun CategoryContentScreen(
 
 //@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun Loading() {
+fun Loading(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         CircularProgressIndicator(
             Modifier.align(Alignment.Center),

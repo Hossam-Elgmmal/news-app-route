@@ -45,6 +45,42 @@ class CategoryContentViewModel @Inject constructor(
     var myText by mutableStateOf("")
     var searchText by mutableStateOf("")
 
+    var page by mutableIntStateOf(1)
+    private var sourceIndex by mutableIntStateOf(0)
+
+    fun getNextPage() {
+        checkConnection()
+        isLoading = true
+        page += 1
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val articles = articlesUseCase
+                    .getNextPage(
+                        sourcesId = sourcesNamesList[sourceIndex].id,
+                        page = page
+                    )
+
+                if (articles.isNotEmpty()) {
+                    newsArticles.addAll(articles.map {
+                        ArticleItem(
+                            it.title,
+                            it.sourcesId,
+                            it.publishedAt,
+                            it.author,
+                            it.urlToImage,
+                            it.description,
+                            it.url,
+                            it.content
+                        )
+                    })
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "getNewsBySource: failed to get articles", e)
+            }
+            isLoading = false
+        }
+    }
+
     fun checkConnection() {
         isInternetAvailable = networkHandler.isOnline()
     }

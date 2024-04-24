@@ -12,6 +12,13 @@ class OnlineArticlesImpl(private val newsApi: NewsApi) : OnlineArticles {
         }
     }
 
+    override suspend fun getNextPage(sourcesId: String, page: Int): List<ArticlesItemDto> {
+        return newsApi.getNewsBySource(sourcesId = sourcesId, page = page).articles.map {
+            it.sourcesId = sourcesId
+            it.toDto()
+        }
+    }
+
     override suspend fun search(searchText: String): List<ArticlesItemDto> {
         return newsApi.searchEverything(searchText = searchText).articles.map {
             it.toDto()

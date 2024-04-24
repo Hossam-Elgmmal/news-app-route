@@ -10,6 +10,10 @@ class ArticlesUseCase @Inject constructor(
         return repository.getArticles(sourcesId)
     }
 
+    suspend fun getNextPage(sourcesId: String, page: Int): List<ArticlesItemDto> {
+        return repository.getNextPage(sourcesId, page)
+    }
+
     suspend fun search(searchText: String): List<ArticlesItemDto> {
         return repository.search(searchText)
     }

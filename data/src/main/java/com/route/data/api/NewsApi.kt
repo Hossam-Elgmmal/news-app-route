@@ -18,6 +18,7 @@ interface NewsApi {
     @GET("everything")
     suspend fun getNewsBySource(
         @Query("apikey") apiKey: String = API_KEY,
+        @Query("page") page: Int = 1,
         @Query("pageSize") pageSize: Int = 10,
         @Query("sources") sourcesId: String,
     ): ArticlesResponse
