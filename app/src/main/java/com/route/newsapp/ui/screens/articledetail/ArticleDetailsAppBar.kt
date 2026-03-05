@@ -23,6 +23,6 @@ fun ArticleDetailsAppBar() {
         },
         colors = TopAppBarDefaults.topAppBarColors(Green),
         modifier = Modifier
-            .clip(shape = RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp))
+            .clip(shape = RoundedCornerShape(bottomEnd = 30.dp, bottomStart = 30.dp))
     )
 }

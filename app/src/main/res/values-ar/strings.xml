@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">News App</string>
+    <string name="app_name">Newsly</string>
     <string name="news_app">تطبيق الأخبار</string>
     <string name="signature">توقيع</string>
     <string name="categories">المجالات</string>

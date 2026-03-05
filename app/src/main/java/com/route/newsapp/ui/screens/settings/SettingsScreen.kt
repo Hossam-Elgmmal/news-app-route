@@ -70,12 +70,12 @@ fun SettingsScreen(onNavigationIconClick: () -> Unit = {}) {
                 text = stringResource(id = R.string.language), style = TextStyle(
                     Color.Black, 22.sp,
                     FontWeight.Bold
-                ), modifier = Modifier.padding(16.dp)
+                ), modifier = Modifier.padding(20.dp)
             )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(32.dp)
+                    .padding(20.dp)
             ) {
                 ExposedDropdownMenuBox(
                     expanded = expanded,

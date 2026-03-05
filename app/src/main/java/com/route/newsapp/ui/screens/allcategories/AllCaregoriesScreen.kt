@@ -3,11 +3,11 @@ package com.route.newsapp.ui.screens.allcategories
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -51,31 +51,25 @@ fun AllCategoriesScreen(
         },
         containerColor = Color.Transparent
     ) { paddingValues ->
-
-        Column(
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(145.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding())
-                .padding(top = 20.dp, start = 20.dp, end = 20.dp)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(20.dp)
         ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = stringResource(R.string.pick_your_category),
+                    style = TextStyle(Gray, 24.sp, FontWeight.Bold)
+                )
+            }
+            items(Constants.categoriesList.size) { position ->
+                CategoryItem(Constants.categoriesList[position], position) {
 
-            Text(
-                text = stringResource(R.string.pick_your_category),
-                style = TextStyle(Gray, 24.sp, FontWeight.Bold)
-            )
+                    navController.navigate("${Destination.NEWS}/$position")
 
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(145.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(16.dp)
-            ) {
-                items(Constants.categoriesList.size) { position ->
-                    CategoryItem(Constants.categoriesList[position], position) {
-
-                        navController.navigate("${Destination.NEWS}/$position")
-
-                    }
                 }
             }
         }
@@ -104,9 +98,8 @@ fun CategoryItem(
             painter = painterResource(id = categoryItem.imageId),
             contentDescription = stringResource(id = categoryItem.titleId),
             modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally)
-                .aspectRatio(1f),
+                .size(140.dp)
+                .align(Alignment.CenterHorizontally),
             contentScale = ContentScale.Fit
         )
         Text(
